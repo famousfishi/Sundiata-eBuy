@@ -1,0 +1,85 @@
+<ion-menu [content]="content">
+    <ion-header>
+      <ion-toolbar>
+      
+      </ion-toolbar>
+    </ion-header>
+  
+    <ion-content style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+<!--   
+      <ion-card>
+        <img src="./assets/imgs/e-buy.jpg"/>
+      </ion-card> -->
+      <ion-card class="card">
+        <img src="./assets/imgs/sundiata-menu-image.png"/>
+      </ion-card>
+
+      <ion-list inset>
+
+          <!-- <ion-item (click)="openPage('purchase')" menuClose *ngIf="!loggedIn">
+            <ion-icon name="cart" item-left small></ion-icon>
+            <h5>Purchase</h5>
+          </ion-item> -->
+
+ <ion-item (click)="openPage('about')" menuClose *ngIf="!loggedIn">
+            <ion-icon name="information-circle" item-left large></ion-icon>
+            <h5>About</h5>
+          </ion-item>
+          
+
+          <!-- <ion-item (click)="openPage('transactions')" menuClose *ngIf="!loggedIn">
+              <ion-icon name="archive" item-left large></ion-icon>
+              <h5>Transactions</h5>
+            </ion-item> -->
+
+<!-- 
+            <ion-item (click)="openPage('re-purchase')" menuClose *ngIf="!loggedIn">
+                <ion-icon name="cash" item-left small></ion-icon>
+                <h5>Re-purchase</h5>
+              </ion-item> -->
+
+              <!-- <ion-item (click)="openPage('review')" menuClose *ngIf="!loggedIn">
+                  <ion-icon name="people" item-left small></ion-icon>
+                  <h5>Review</h5>
+                </ion-item> -->
+
+                <ion-item (click)="openPage('contact-us')" menuClose *ngIf="!loggedIn" >
+                    <ion-icon name="mail" item-left large></ion-icon>
+                    <h5>Contact us</h5>
+                  </ion-item>
+<!-- 
+                  <ion-item (click)="openPage('transaction-details')" menuClose *ngIf="!loggdIn">
+                    <ion-icon name="cash" item-left large></ion-icon>
+                    <h5>Transaction Details</h5>
+
+                  </ion-item> -->
+<!-- 
+                  <ion-item (click)="openPage('faq')" menuClose *ngIf="!loggedIn">
+                      <ion-icon name="help" item-left large></ion-icon>
+                      <h5>FAQ</h5>
+                    </ion-item> -->
+
+                  <!-- <ion-item (click)="openPage('register')" menuClose *ngIf="!loggedIn">
+                      <ion-icon name="md-clipboard" item-left large></ion-icon>
+                      <h5>Sign up</h5>
+                    </ion-item> -->
+
+                  <!-- <ion-item (click)="openPage('login')" menuClose *ngIf="!loggedIn">
+                      <ion-icon name="log-in" item-left large></ion-icon>
+                      <h5>Login</h5>
+                    </ion-item> -->
+
+              <!-- <ion-item (click)="openPage('logout')" menuClose *ngIf="!loggedIn">
+                  <ion-icon name="log-out" item-left large></ion-icon>
+                  <h5>Logout</h5>
+                </ion-item> -->
+              
+              
+      </ion-list>
+
+
+    </ion-content>
+  
+  </ion-menu>
+  
+  <ion-nav #content [root]="homePage"></ion-nav>

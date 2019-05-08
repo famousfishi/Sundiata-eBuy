@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar color="light">
+    <ion-title>Your transaction history</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content no-padding style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+  <ion-card color="light">
+    <ion-card-content>
+      <ion-searchbar> </ion-searchbar><br/>
+      <h1>No records found</h1><br/>
+      <button ion-button (click)="refresh()"  large block color="primary">Refresh</button>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar color="light">
+    <ion-title>BUY DATA</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="bg-image" no-padding style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+    
+
+    <ion-card class="card" color="light">
+      <ion-card-content class="card-content">
+        <ion-card-title>
+         <b>
+          DATA PLANS
+         </b> 
+        </ion-card-title>
+
+        <ion-item>
+            <ion-label>Select a Network</ion-label>
+            <ion-select #networks (ionChange)="setDistrictValues(networks.value, networks.text)" [(ngModel)]="sState">
+                <ion-option [value]="s.id" *ngFor="let s of dataServices">{{s.name}} </ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Select a Data Bundle</ion-label>
+          
+                <ion-select  #dataBundle (ionChange)="logText(dataBundle.text)" [(ngModel)]="sDistrict">
+                  <ion-option [value]="s.id" *ngFor="let s of districts">{{s.name}}</ion-option>
+                </ion-select>
+         </ion-item>
+
+ 
+
+          <ion-item>
+              <ion-label >Phone/Device No.</ion-label>
+              <ion-input [(ngModel)]="phone" floating type="number" placeholder="09000000000"></ion-input>
+            </ion-item>
+
+          <ion-item>
+              <ion-label >Email address</ion-label>
+              <ion-input [(ngModel)]="email" floating type="email" placeholder="you@email.com"></ion-input>
+            </ion-item>
+     
+
+      
+            <button (click)="confirm()" ion-button color="green" large block> Confirm</button><br/>
+       
+        
+                 
+
+
+
+      </ion-card-content>
+    </ion-card>
+
+</ion-content>

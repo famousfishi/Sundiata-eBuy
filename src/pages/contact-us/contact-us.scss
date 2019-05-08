@@ -1,0 +1,26 @@
+page-contact-us {
+    .bg-image {
+        background-image: url('../assets/imgs/paper-2.jpeg');
+        background-repeat: no-repeat;
+    
+        background-position: center;
+        background-size: cover;
+        
+        
+    }
+    .footer-image {
+        background-image: url('../assets/imgs/power.jpeg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .card {
+        margin-top: 3em;
+        padding-bottom: 2em;
+    }
+
+    .no-scroll .scroll-content {
+        overflow: hidden;
+    }
+
+}

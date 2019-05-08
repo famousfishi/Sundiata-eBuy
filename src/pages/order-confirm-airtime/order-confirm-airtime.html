@@ -1,0 +1,89 @@
+<ion-header>
+
+  <ion-navbar color="light">
+    <ion-title>ORDER CONFIRMATION</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="no-scroll" no-padding
+  style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+  <ion-card class="card" color="light">
+    <ion-card-content class="card-content">
+      <ion-card-title>
+        Confirm your order
+      </ion-card-title>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            NETWORK
+          </ion-col>
+          <ion-col col-6>
+            {{networkText | uppercase}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            PHONE
+          </ion-col>
+          <ion-col col-6>
+            {{phone}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            EMAIL
+          </ion-col>
+          <ion-col col-6>
+            {{email}}
+          </ion-col>
+        </ion-row>
+
+
+
+        <ion-row>
+          <ion-col col-6>
+            Amount
+          </ion-col>
+          <ion-col col-6>
+            {{amount | currency: "N"}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            Total
+          </ion-col>
+          <ion-col col-6>
+            {{total | currency: "N"}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <button (click)="back()" ion-button color="danger" large block>
+              <ion-icon name="arrow-back"></ion-icon> Back
+            </button>
+          </ion-col>
+          <ion-col col-6>
+
+
+
+            <button angular-rave (init)="paymentInit()" class="btn btn-primary payBtn" [raveOptions]="paymentOptions"
+              (callback)="paymentSuccess($event)">
+              <ion-icon name="card" large></ion-icon>PAY WITH RAVE
+
+            </button>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

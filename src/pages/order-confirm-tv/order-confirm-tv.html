@@ -1,0 +1,111 @@
+<ion-header>
+
+  <ion-navbar color="light">
+    <ion-title>ORDER CONFIRMATION</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="no-scroll" no-padding
+  style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+  <ion-card class="card" color="light">
+    <ion-card-content class="card-content">
+      <ion-card-title>
+        Confirm your order
+      </ion-card-title>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            TV Plans
+          </ion-col>
+          <ion-col col-6>
+            <!-- {{sState}} -->
+            {{dataText | uppercase}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            Name
+          </ion-col>
+          <ion-col col-6>
+            <!-- {{sState}} -->
+            {{customerName | uppercase}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            Smart Card No.
+          </ion-col>
+          <ion-col col-6>
+            <!-- {{sDistrict}} -->
+            {{smartCard}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            Your phone number
+          </ion-col>
+          <ion-col col-6>
+            {{phone}}
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col col-6>
+            Email
+          </ion-col>
+          <ion-col col-6>
+            {{email}}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            Amount
+          </ion-col>
+          <ion-col col-6>
+            {{amountToPay}}
+          </ion-col>
+        </ion-row>
+
+
+        <!-- <ion-row>
+                  <ion-col col-6>
+                    Convenience
+                  </ion-col>
+                  <ion-col col-6>
+                    {{convenienceFee | currency: "N"}}
+                  </ion-col>
+                </ion-row> -->
+
+        <ion-row>
+          <ion-col col-6>
+            <button (click)="back()" ion-button color="danger" large block>
+              <ion-icon name="arrow-back"></ion-icon> Back
+            </button>
+          </ion-col>
+          <ion-col col-6>
+
+           <button angular-rave (init)="paymentInit()" class="btn btn-primary payBtn" [raveOptions]="paymentOptions"
+             (callback)="paymentSuccess($event)">
+             <ion-icon name="card" large></ion-icon>PAY WITH RAVE
+
+           </button>
+
+
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

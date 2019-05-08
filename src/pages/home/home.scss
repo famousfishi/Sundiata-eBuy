@@ -1,0 +1,36 @@
+page-home {
+  .bg-image {
+    background-image: url('../assets/imgs/paper-2.jpeg');
+    background-repeat: no-repeat;
+
+    background-position: center;
+    background-size: cover;
+
+
+  }
+
+  .buttons {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 50px;
+
+
+
+  }
+
+
+
+  .logo {
+    width: 250px;
+    height: 200px;
+    padding-top: 30px;
+    padding-left: 100px;
+  }
+
+  .card {
+    margin-top: 0em !important;
+    margin-bottom: 5em;
+
+  }
+
+}

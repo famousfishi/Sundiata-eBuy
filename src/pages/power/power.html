@@ -1,0 +1,97 @@
+
+<ion-header>
+
+  <ion-navbar color="light">
+    <ion-title>BUY POWER</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="bg-image">
+    <ion-card class="card" color="light">
+      <ion-card-content class="card-content" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+        <ion-card-title>
+          <b>
+            POWER
+          </b>
+        </ion-card-title>
+  
+       
+        <ion-list>
+
+          
+            <ion-item>
+                <ion-label>State</ion-label>
+                  <ion-select [(ngModel)]="stateMethod" #powerState (ionChange)="setPowerState(powerState.text, powerState.value)">
+                    <ion-option *ngFor= "let s of states" value="{{s.id}}"> {{s.state}} </ion-option>
+                  </ion-select>
+            </ion-item>    
+
+         
+            
+
+            <ion-item>
+              <ion-label>Meter type</ion-label>
+              <ion-select [(ngModel)]="meterTypeMethod" #meterTypeState (ionChange)="setMeterState(meterTypeState.text,meterTypeState.value)">
+                <ion-option *ngFor = "let s of meterTypes" value="{{s.meterType_no}}">{{s.meterType_name}}</ion-option>
+
+              </ion-select>
+            </ion-item>
+
+         
+
+         
+
+          <ion-item>
+            <ion-label >Meter No.</ion-label>
+            <ion-input [(ngModel)]="meterNo" floating type="number"></ion-input>
+          </ion-item>
+
+          <ion-item>
+              <ion-label >Phone</ion-label>
+              <ion-input [(ngModel)]= "phone" floating type="number" placeholder="09000000000"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label >Email</ion-label>
+                <ion-input [(ngModel)]= "email" floating type="email" placeholder="you@email.com"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label >Amount</ion-label>
+                  <ion-input [(ngModel)]="amount" floating type="number"></ion-input>
+                </ion-item>
+
+
+                <ion-item [ngClass]="showStatus">
+                  <ion-label>Select Disco</ion-label>
+                  <ion-select [(ngModel)]="userDisco">
+                    <ion-option value="1">Eko Distribution Company</ion-option>
+                    <ion-option value="2">Ikeja Distribution Company</ion-option>
+                  </ion-select>
+                </ion-item>
+             
+  
+              
+         
+  
+          
+                <button (click)="confirm()" ion-button color="green" block large> Confirm</button><br/>
+           
+
+            
+                <!-- <button (click)="resetMe()" ion-button color="danger" block large> Reset</button><br/> -->
+            
+          
+  
+  
+        </ion-list>
+        
+  
+      </ion-card-content>
+    </ion-card>
+  
+   
+  </ion-content>
+  

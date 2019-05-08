@@ -1,0 +1,64 @@
+<ion-header>
+
+    <ion-navbar color="light">
+      <ion-title>BUY AIRTIME</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content class="bg-image" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+      <ion-card class="card" color="light">
+        <ion-card-content class="card-content">
+          <ion-card-title>
+            <b>
+              AIRTIME
+            </b>
+          </ion-card-title>
+    
+          <ion-list>
+  
+            
+              <ion-item>
+                  <ion-label>Network</ion-label>
+                    <ion-select [(ngModel)]="sState" #network (ionChange)="logText(network.text)">
+                      <ion-option value="{{s.id}}" *ngFor= "let s of dataServices" > {{s.name}} </ion-option>
+                    </ion-select>
+              </ion-item>
+  
+           
+            <ion-item>
+                <ion-label >Phone</ion-label>
+                <ion-input [(ngModel)]="phone" floating type="number" placeholder="09000000000"></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                  <ion-label >Email</ion-label>
+                  <ion-input [(ngModel)]="email" floating type="email" placeholder="you@email.com"></ion-input>
+                </ion-item>
+  
+                <ion-item>
+                    <ion-label >Amount</ion-label>
+                    <ion-input [(ngModel)]="amount" floating type="number"></ion-input>
+                  </ion-item>
+    
+           
+    
+            
+                  <button (click)="confirm()" ion-button color="green" large block> Confirm</button><br/>
+             
+              
+                  <!-- <button (click)="resetMe()" ion-button color="danger" large block> Reset</button><br/> -->
+              
+            
+    
+    
+          </ion-list>
+    
+        </ion-card-content>
+      </ion-card>
+    
+     
+    </ion-content>
+    
+  

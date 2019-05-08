@@ -1,0 +1,82 @@
+
+<ion-header>
+
+    <ion-navbar color="light">
+      <ion-title>Transaction Details(TV) </ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content no-padding class="">
+    <ion-card class="card" color="light">
+      
+      <ion-card-content class="card-content" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+          <ion-card-title>
+              TV
+            </ion-card-title>
+        <ion-grid>  
+          <ion-row>
+            <ion-col col-6>
+              TRANSACTION ID
+            </ion-col>
+            <ion-col col-6>
+              {{transactionID}}
+            </ion-col>
+
+
+
+            <ion-col col-6>
+                TOKEN
+              </ion-col>
+              <ion-col col-6>
+                {{token}}
+              </ion-col>
+
+
+              <ion-col col-6>
+                NAME
+              </ion-col>
+              <ion-col col-6>
+                {{customerName}}
+              </ion-col>
+
+            
+              <ion-col col-6>
+                REF
+                </ion-col>
+                <ion-col col-6>
+                  {{refKey}}
+                </ion-col>
+              
+                  <!-- <ion-col col-6>
+                    STATUS
+                    </ion-col>
+                    <ion-col col-6>
+                      {{status}}
+                    </ion-col> -->
+                    <ion-col col-6>
+                      DATE
+                      </ion-col>
+                      <ion-col col-6>
+                        {{today}}
+                      </ion-col>
+                      <br/>
+  
+                      <h3 style="text-align: center"><b>You should receive your tv-plan token shortly with a 
+                        notification to your e-mail and phone number.</b></h3>
+                      
+                                    <ion-col col-12>
+                                        <button (click)="home()" ion-button large block color="primary" >HOME</button>
+                                    </ion-col>
+                                   
+          </ion-row>
+        </ion-grid>
+  
+  
+  
+      </ion-card-content>
+    </ion-card>
+  
+  </ion-content>
+  

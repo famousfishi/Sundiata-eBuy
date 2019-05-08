@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar color="light">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        <!-- <div style="height: 50px;">
+          <img src="../../assets/imgs/sundiata-banner.png" style="height: 20px; width: 150px; " />
+        </div> -->
+        <ion-title style="text-transform: none; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Sundiata e-Buy</ion-title>
+  </ion-navbar>
+</ion-header>
+ <!-- logo -->
+ 
+
+<ion-content class="bg-image" no-padding style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+  <!-- <div class="logo">
+    <img src="../assets/imgs/sundiata-banner.png"/>
+  
+  </div> -->
+
+  <ion-card color="light" class="card" round>
+    <ion-card-content>
+      <ion-card-title style="text-align: center">
+        <b>Select any to proceed</b>
+      </ion-card-title>
+        <div class="buttons">
+            <button (click)="power()" id="power" style="width: 250px; color: darkorange " ion-button round color="light" large><b> <ion-icon name="bulb"></ion-icon> BUY ELECTRICITY</b></button><br/><br/>
+            <button (click)="airtime()" id="airtime" style="width: 250px; color: green" ion-button round color="light" large><b><ion-icon name="call"></ion-icon> BUY AIRTIME</b></button><br/><br/>
+            <button (click)="data()" id="data" style="width: 250px; color: red" ion-button round color="light" large><b><ion-icon name="cash"></ion-icon> BUY DATA BUNDLE</b></button><br/><br/>
+            <button (click)="tv()" id="tv" style="width: 250px; color: blue" ion-button round color="light" large><b><ion-icon name="desktop"></ion-icon> PAY TV BILLS</b></button>
+        </div>
+    </ion-card-content>
+
+
+   
+  </ion-card>
+  <!-- <div class="logo">
+    <img src="../../assets/imgs/sundiata-footer.png" style="height: 90px; width: 500px; " />
+  </div> -->
+
+ 
+  
+ 
+</ion-content>
