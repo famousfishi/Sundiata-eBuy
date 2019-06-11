@@ -1,0 +1,65 @@
+<!--
+  Generated template for the VendorTvCompletePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button icon-only color="royal" (click)="CloseModal()" >
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-navbar>
+    <ion-title>Complete Transaction</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding *ngIf="verified">
+  <ion-card>
+    <ion-card-content>
+      <ion-row>
+        <ion-col align-self-start></ion-col>
+        <ion-col align-self-center>
+          <img src="../../assets/imgs/services/tv/dstv.png" *ngIf="transaction.provider == 'DSTV'">
+          <img src="../../assets/imgs/services/tv/gotv.png" *ngIf="transaction.provider == 'GOTV'">
+          <img src="../../assets/imgs/services/tv/startimes.png" *ngIf="transaction.provider == 'StarTimes'">
+        </ion-col>
+        <ion-col align-self-end></ion-col>
+      </ion-row>
+      <ion-card-title justify-content-center>
+        {{ transaction.provider }}
+      </ion-card-title>
+      <p>Meter Number: {{ transaction.smartCard }}</p>
+      <p>Transaction ID: {{ transactionID }}</p>
+      <p>Recipient: {{ card.customer }}</p>
+    </ion-card-content>
+  </ion-card>
+  <button ion-button small block (click)="CompleteTransaction()" color="primary" [disabled]="btnDisabled">Complete Transaction</button>
+  <button ion-button small block (click)="CloseModal()" color="danger">
+    Close
+  </button>
+</ion-content>
+
+<ion-content *ngIf="!verified">
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        Verifying smart card details
+      </ion-card-title>
+    </ion-card-content>
+  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-start></ion-col>
+      <ion-col align-self-center>
+        <img src="../../assets/imgs/208.gif" class="loading">
+      </ion-col>
+      <ion-col align-self-end></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

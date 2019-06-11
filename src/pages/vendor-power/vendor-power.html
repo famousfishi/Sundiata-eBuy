@@ -1,0 +1,92 @@
+<!--
+  Generated template for the VendorPowerPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content padding>
+  <ion-segment [(ngModel)]="powerMenu">
+    <ion-segment-button value="fresh">New Transaction</ion-segment-button>
+    <ion-segment-button value="history">History</ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="powerMenu">
+    <ion-list *ngSwitchCase="'fresh'" no-lines (swipe)="SwipeEvent($event, 1)">
+      <form #form="ngForm" name="form" (ngSubmit)="VerifyMeter($event)">
+        <ion-item *ngIf="states">
+          <ion-label floating>State</ion-label>
+          <ion-select name="state" [(ngModel)]="transaction.state" #powerState (ionChange)="ChangeState(powerState.value, powerState.text)">
+            <ion-option *ngFor= "let s of states"[value]="s.id"> {{s.state}} </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Meter type</ion-label>
+          <ion-select name="meterType" [(ngModel)]="transaction.meterType" #meterTypeAnchor (ionChange)="ChangeMeterType(meterTypeAnchor.value)">
+            <ion-option value="1"> Prepaid</ion-option>
+            <ion-option value="2"> Postpaid</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Meter No.</ion-label>
+          <ion-input [(ngModel)]="transaction.meterNo" type="number" name="meterNo" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Phone</ion-label>
+          <ion-input [(ngModel)]= "transaction.phone" type="number" name="phone" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Email</ion-label>
+          <ion-input [(ngModel)]= "transaction.email" type="email" placeholder="you@email.com" name="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Amount</ion-label>
+          <ion-input [(ngModel)]="transaction.amount" name="amount" type="number" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="hideLagos">
+          <ion-label>Select Disco</ion-label>
+          <ion-select [(ngModel)]="transaction.disco" name="disco">
+            <ion-option value="1">Eko Distribution Company</ion-option>
+            <ion-option value="2">Ikeja Distribution Company</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <br><br>
+          <button type="submit" ion-button large block [disabled]="form.invalid || btnDisabled">Confirm Meter</button>
+        </ion-item>
+      </form>
+    </ion-list>
+    <ion-list *ngSwitchCase="'history'" (swipe)="SwipeEvent($event, 2)">
+      <ion-refresher (ionRefresh)="RefreshPage($event)">
+        <ion-refresher-content
+          pullingIcon="arrow-dropdown"
+          pullingText="Pull to refresh"
+          refreshingSpinner="circles"
+          refreshingText="Refreshing..."
+        ></ion-refresher-content>
+      </ion-refresher>
+      <div *ngIf="transactionsHistory && transactionsHistory.status">
+        <ion-item *ngFor="let a of presentHistory">
+          <h2>Meter No.: {{ a.meter_num }}</h2>
+          <h3>Transaction ID: {{ a.transaction_id }}</h3>
+          <p>Amount: {{ a.amount }} | Disco: {{ a.service.name }}</p>
+          <ion-badge *ngIf="a.status == 0" color="warning">Pending</ion-badge>
+          <ion-badge *ngIf="a.status == 1" color="primary">In-progress</ion-badge>
+          <ion-badge *ngIf="a.status == 2" color="success">Fulfilled</ion-badge>
+          <ion-badge *ngIf="a.status == 3" color="danger">Failed</ion-badge>
+          <ion-badge *ngIf="a.status == 4" color="dark">Re-try</ion-badge>
+        </ion-item>
+        <ion-infinite-scroll (ionInfinite)="DoInfiniteScroll($event)" *ngIf="pagination.PageCount > 1 && pagination.PageItemCount(historyPage+1) !== -1">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
+      <div *ngIf="!transactionsHistory">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-12>
+              <img src="../../assets/imgs/page-empty-page.jpg">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

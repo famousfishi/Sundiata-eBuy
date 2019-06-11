@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { AllServicesProvider } from '../../providers/all-services/all-services';
+import { ServicesTvProvider } from '../../providers/services-tv/services-tv';
+import { retry } from 'rxjs/operators';
+import { NotificationProvider } from '../../providers/notification/notification';
 
 @IonicPage()
 @Component({
@@ -8,35 +11,29 @@ import { AllServicesProvider } from '../../providers/all-services/all-services';
   templateUrl: 'tv.html',
 })
 export class TvPage {
- 
-
   phone: number;
   email: string;
   smartCard: number;
-
   refKey: any;
-
   tvServices: any;
   sState: any;
-
   districts: any;
   sDistrict: any;
   packageBundle: any;
   dataText: any;
   amount: number;
-
   token: any;
-
   amountToPay: number;
   transactionID : any;
   customerName: any;
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, 
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController,
      public navParams: NavParams,
      public loadCtrl: LoadingController, public allServices: AllServicesProvider,
-     public alertCtrl: AlertController
+     public alertCtrl: AlertController, private tv: ServicesTvProvider,
+     private notification: NotificationProvider
      ) {
-   
+
   }
 
   ionViewDidLoad() {
@@ -68,7 +65,7 @@ export class TvPage {
 
   ionViewWillEnter(){
     this.refKey = this.randomInt();
-  
+
 
     console.log('refKey is : ' + this.refKey);
 
@@ -136,58 +133,95 @@ export class TvPage {
    }).present();
    return reg.test(String(this.email));
  } else {
-
-
-
-    this.allServices.getCardInfo(
-      this.sState,
-      this.smartCard,
-      this.amount,
-      this.email,
-      this.phone,
-      localStorage.getItem("locator"),
-      this.packageBundle,
-      this.sDistrict,
+    this.tv.ConfirmSmartCard(
+      this.sState, this.smartCard, this.amount, this.email, this.phone, localStorage.getItem('locator'), this.packageBundle, this.sDistrict,
       this.dataText
-    ).then(data=>{
-      this.token =  data['msg']['token'];
-      this.amountToPay = data['msg']['amountToPay'];
-      this.transactionID = data['msg']['transactionID'];
-      this.customerName = data['msg']['customerName'];
-      
-      console.log(data);
-      console.log(data['msg']['token']);
-      console.log(data['msg']['amountToPay']);
-      console.log(data['msg']['transactionID']);
-      console.log(data['msg']['customerName']);
-
-      this.loadCtrl.create({
-        content: 'Please wait',
-        duration: 5000
-      }).present();
-    
-    this.navCtrl.push('OrderConfirmTvPage', { 
-      phone: this.phone,
-      email: this.email,
-      sState: this.sState,
-       sDistrict: this.sDistrict,
-       dataText: this.dataText,
-       packageBundle: this.packageBundle, 
-       amount: this.amount,
-       smartCard: this.smartCard,
-       token: this.token,
-       amountToPay: this.amountToPay,
-       transactionID: this.transactionID,
-       customerName: this.customerName
-
-       
-      });
-
-    
-    })
-    .catch(error=>{
-      console.log(error);
+    )
+    .pipe( retry(3) )
+    .subscribe( (data) => {
+      if (data.status === 200) {
+        const body = data.body;
+        if (body.success) {
+          this.notification.ShowLoading('Card confirmed. Please wait...');
+          const util: any = body.msg;
+          this.token = util.token;
+          this.amountToPay = util.amountToPay;
+          this.transactionID = util.transactionID;
+          this.customerName = util.customerName;
+          this.navCtrl.push('OrderConfirmTvPage', {
+            phone: this.phone,
+            email: this.email,
+            sState: this.sState,
+            sDistrict: this.sDistrict,
+            dataText: this.dataText,
+            packageBundle: this.packageBundle,
+            amount: this.amount,
+            smartCard: this.smartCard,
+            token: this.token,
+            amountToPay: this.amountToPay,
+            transactionID: this.transactionID,
+            customerName: this.customerName
+          });
+        } else {
+          this.notification.ShowAlert(body.msg);
+        }
+      } else {
+        this.notification.ShowAlert(data.statusText);
+      }
+    }, error => {
+      this.notification.ShowAlert(error.message);
     });
+
+
+    // this.allServices.getCardInfo(
+    //   this.sState,
+    //   this.smartCard,
+    //   this.amount,
+    //   this.email,
+    //   this.phone,
+    //   localStorage.getItem("locator"),
+    //   this.packageBundle,
+    //   this.sDistrict,
+    //   this.dataText
+    // ).then(data=>{
+    //   this.token =  data['msg']['token'];
+    //   this.amountToPay = data['msg']['amountToPay'];
+    //   this.transactionID = data['msg']['transactionID'];
+    //   this.customerName = data['msg']['customerName'];
+
+    //   console.log(data);
+    //   console.log(data['msg']['token']);
+    //   console.log(data['msg']['amountToPay']);
+    //   console.log(data['msg']['transactionID']);
+    //   console.log(data['msg']['customerName']);
+
+    //   this.loadCtrl.create({
+    //     content: 'Please wait',
+    //     duration: 5000
+    //   }).present();
+
+    // this.navCtrl.push('OrderConfirmTvPage', {
+    //   phone: this.phone,
+    //   email: this.email,
+    //   sState: this.sState,
+    //    sDistrict: this.sDistrict,
+    //    dataText: this.dataText,
+    //    packageBundle: this.packageBundle,
+    //    amount: this.amount,
+    //    smartCard: this.smartCard,
+    //    token: this.token,
+    //    amountToPay: this.amountToPay,
+    //    transactionID: this.transactionID,
+    //    customerName: this.customerName
+
+
+    //   });
+
+
+    // })
+    // .catch(error=>{
+    //   console.log(error);
+    // });
   }
 }
 
@@ -209,7 +243,7 @@ export class TvPage {
 
   }
 
-  
 
 
- 
+
+

@@ -17,22 +17,22 @@
         </b>
       </ion-card-title>
 
-      
+
       <ion-list>
-      
-         
+
+
 
             <ion-item>
               <ion-label>
                 SELECT A PROVIDER
               </ion-label>
               <ion-select #providers (ionChange)="setDistrictValues(providers.value, providers.text)" [(ngModel)]= "sState">
-                <ion-option value="{{s.id}}" *ngFor="let s of tvServices">{{s.name}}</ion-option>
+                <ion-option [value]="s.id" *ngFor="let s of tvServices">{{s.name}}</ion-option>
               </ion-select>
             </ion-item>
 
-      
-            
+
+
           <ion-item>
               <ion-label>SELECT A PACKAGE</ion-label>
                 <ion-select  #packageBundle (ionChange)="logText(packageBundle.text, packageBundle.value)" [(ngModel)]="sDistrict">
@@ -40,37 +40,37 @@
                 </ion-select>
           </ion-item>
 
-        
+
           <ion-item>
               <ion-label >Smart Card No.</ion-label>
               <ion-input floating type="number" [(ngModel)]="smartCard"></ion-input>
           </ion-item>
 
             <!-- <ion-label>Please confirm smartcard number<button (click)="confirmSmart()" clear ion-button color="green">Confirm</button></ion-label> -->
-            
+
         <ion-item>
             <ion-label >Phone</ion-label>
             <ion-input floating type="number"  placeholder= "09000000000"[(ngModel)]="phone"></ion-input>
           </ion-item>
 
-       
+
 
           <ion-item>
               <ion-label >Email</ion-label>
               <ion-input floating type="email" placeholder="you@email.com" [(ngModel)]="email"></ion-input>
             </ion-item>
 
-           
 
-       
 
-        
+
+
+
               <button (click)="confirm()" ion-button color="green" large block> Confirm</button><br/>
-         
-          
+
+
               <!-- <button (click)="resetMe()" ion-button color="danger" large block> Reset</button><br/> -->
-          
-        
+
+
 
 
       </ion-list>

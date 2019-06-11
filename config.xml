@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.sundiatapost.ebuy" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.sundiatapost.ebuy" version="1.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Sundiata e-Buy</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>eBuy brings convenience to your comfort. Need instant power, airtime topup or data subscription. E-Buy takes care of all these and many more. Looking for a side hustle or ways to make money on the go, look no further simply download eBuy and sign up as a vendor.</description>
+    <author email="care@sundiatapost.com" href="https://ebuy.sundiatapost.com">Tox Technologies</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
