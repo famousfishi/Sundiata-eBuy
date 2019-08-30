@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AllServicesProvider } from '../../providers/all-services/all-services';
+import { ServicesPowerProvider } from '../../providers/services-power/services-power';
+import { retry } from 'rxjs/operators';
+import { NotificationProvider } from '../../providers/notification/notification';
 
 /**
  * Generated class for the PowerPage page.
@@ -15,7 +18,7 @@ import { AllServicesProvider } from '../../providers/all-services/all-services';
   templateUrl: 'power.html',
 })
 export class PowerPage {
- 
+
   stateMethod: any;
   states: any;
   pickedStates: any[];
@@ -43,13 +46,14 @@ export class PowerPage {
   meterText: any;
   name: void;
   providerElectricity: any;
-  
 
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, 
-    public navParams: NavParams, public loadCtrl: LoadingController, 
-  public allServices: AllServicesProvider) {
-   
+
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController,
+    public navParams: NavParams, public loadCtrl: LoadingController,
+  public allServices: AllServicesProvider, private power: ServicesPowerProvider,
+  private notification: NotificationProvider) {
+
 
 
     this.meterTypes = [
@@ -57,7 +61,7 @@ export class PowerPage {
       {meterType_id: "postpaid", meterType_name: "Postpaid", meterType_no: 2},
     ]
 
-    
+
 
   }
 
@@ -91,7 +95,7 @@ export class PowerPage {
       if(item.state_no == this.stateMethod){
       //  stateData = item;
       }
-     
+
     });
 
       if(!this.stateMethod){
@@ -104,7 +108,7 @@ export class PowerPage {
         this.toastCtrl.create({
           message: 'Your phone number must be 11 digits',
           duration: 4000
-  
+
         }).present();
         return false;
 
@@ -112,95 +116,67 @@ export class PowerPage {
         this.toastCtrl.create({
           message: 'Please put a valid email',
           duration: 4000
-  
+
         }).present();
         return reg.test(String(this.email));
       }else {
-       
+
 
         if(this.selectedStateValue != 25) {
           this.userDisco = 0;
         }
 
-        // make a call to the get meter info first 
-        this.allServices.getMeterInfo(
-          this.stateMethod,
-          this.meterTypeMethod,
-          this.meterNo,
-          this.amount,
-          this.email,
-          this.phone,
-          localStorage.getItem("locator"),
-        this.dataText,
-        this.userDisco,
-
-        
-
-        ).then(data=>{
-
-          this.loadCtrl.create({
-            content:'Please wait',
-            duration: 5000
-          }).present();
-         
-         this.token = data['token'];
-         this.serviceProvider = data['serviceProvider'];
-         this.amountPaid = data['amount'];
-         this.providerElectricity = data['msg']['util'];
-         this.name = data['msg']['name']; 
-          console.log(data);
-          console.log(this.token);
-          console.log(this.serviceProvider);
-          console.log(this.amountPaid);
-          console.log(this.name);
-          console.log(this.providerElectricity);
-
-           this.loadCtrl.create({
-          content:'Please wait',
-          duration: 3000
-        }).present();
-          
-          this.navCtrl.push('OrderConfirmPage', {
-          
-            stateMethod: this.stateMethod,
-            dataText: this.dataText,
-            meterText: this.meterText,
-            meterTypeMethod: this.meterTypeMethod,
-             meterNo:this.meterNo,
-            phone: this.phone, 
-            email: this.email,
-             amount: this.amount,
-             pickedStateMethod: this.pickedStateMethod,
-             userDisco: this.userDisco,
-             
-             token: this.token,
-             amountPaid : this.amountPaid,
-             refKey: this.refKey,
-             providerElectricity: this.providerElectricity,
-             name: this.name,
-             serviceProvider: this.serviceProvider
-  
-  
-        
-          });
-        }).catch(error=>{
+        // make a call to the get meter info first
+        this.power.VerifyMeter(
+          this.stateMethod, this.meterTypeMethod, this.meterNo,
+          this.amount, this.email, this.phone, localStorage.getItem('locator'), this.dataText, this.userDisco)
+        .pipe( retry(3) )
+        .subscribe( (data) => {
+          if (data.status === 200) {
+            const body = data.body;
+            if (body.status) {
+              this.notification.ShowLoading('Please wait while we confirm your meter data...');
+              this.token = body.token;
+              this.serviceProvider = body.serviceProvider;
+              this.amountPaid = body.amount;
+              const util: any = body.msg;
+              this.providerElectricity = util.util;
+              this.name = util.name;
+              this.navCtrl.push('OrderConfirmPage', {
+                stateMethod: this.stateMethod,
+                dataText: this.dataText,
+                meterText: this.meterText,
+                meterTypeMethod: this.meterTypeMethod,
+                 meterNo:this.meterNo,
+                phone: this.phone,
+                email: this.email,
+                 amount: this.amount,
+                 pickedStateMethod: this.pickedStateMethod,
+                 userDisco: this.userDisco,
+                 token: this.token,
+                 amountPaid : this.amountPaid,
+                 refKey: this.refKey,
+                 providerElectricity: this.providerElectricity,
+                 name: this.name,
+                 serviceProvider: this.serviceProvider
+              });
+            } else {
+              this.notification.ShowAlert(body.msg);
+            }
+          } else {
+            this.notification.ShowAlert(data.statusText);
+          }
+        }, error => {
+          this.notification.ShowAlert(error.message);
+          console.log('unable to verify meter number');
           console.log(error);
         });
       }
-      
-  
-
-    
-    
-
-    
-    
-
   }
 
   resetMe(){
-    
-    
+
+
   }
 
   setPowerState(text, value) {

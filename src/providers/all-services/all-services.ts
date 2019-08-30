@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {LoadingController, AlertController} from 'ionic-angular';
+import { retry } from 'rxjs/operators';
 import 'rxjs/add/operator/toPromise';
 
 
@@ -15,8 +16,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AllServicesProvider {
-   baseUrl: string = "https://ebuy.sundiatapost.com/api";
-    // baseUrl: string = "http://sideh/api";
+  //  baseUrl: string = "https://ebuy.sundiatapost.com/api";
+    baseUrl: string = "http://sideh/api";
 
 
     baseUrl2: string ="https://swapi.co/api";
@@ -33,6 +34,7 @@ export class AllServicesProvider {
   async gLocatorId(){
     return await new Promise((resolve, reject)=>{
       this.http.get(`${this.baseUrl}/generate-locator`)
+      .pipe( retry(3) )
       .subscribe(data => {
         resolve(data);
       }, error => {
@@ -106,7 +108,9 @@ export class AllServicesProvider {
     {
       stateID: stateID, meterType: meterType, meterNo: meterNo, amount: amount, email: email,
       phone: phone, gLocatorID: gLocatorID , state: state, disco: disco
-    }).subscribe(data=>{
+    })
+    .pipe( retry(3) )
+    .subscribe(data=>{
       console.log('sucesss..');
       resolve(data);
       this.alertCtrl.create({
@@ -165,6 +169,7 @@ export class AllServicesProvider {
  async getDataService() {
     return await new Promise((resolve, reject) => {
       this.http.get(`${this.baseUrl}/services/get-service/2`)
+      .pipe( retry(3) )
       .subscribe(data => {
         resolve(data);
       }, error => {
@@ -177,6 +182,7 @@ export class AllServicesProvider {
  // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return await new Promise((resolve, reject) => {
       this.http.get(`${this.baseUrl}/services/get-service/1`)
+      .pipe( retry(3) )
       .subscribe(data => {
         resolve(data);
       }, error => {
@@ -188,6 +194,7 @@ export class AllServicesProvider {
   async getTvService() {
     return await new Promise((resolve, reject) => {
       this.http.get(`${this.baseUrl}/services/get-service/4`)
+      .pipe( retry(3) )
       .subscribe(data => {
         resolve(data);
       }, error => {
@@ -202,6 +209,7 @@ export class AllServicesProvider {
     console.log('network ID is:' + networkID);
     return await new Promise((resolve, reject)=>{
       this.http.get(this.baseUrl + '/data/bundles/' + networkID)
+      .pipe( retry(3) )
       .subscribe(data=>{
         resolve(data);
       }, error=>{
@@ -297,6 +305,7 @@ export class AllServicesProvider {
   async getStates(){
     return await new Promise((resolve, reject)=>{
       this.http.get(`${this.baseUrl}/states`)
+      .pipe( retry(3) )
       .subscribe(data=>{
         resolve(data);
       }, error=>{
@@ -310,14 +319,16 @@ export class AllServicesProvider {
 
   //get TV info
   async getTvInfo(providerID: number){
-    console.log('Provider TV ID is:' + providerID);
-    return await new Promise((resolve, reject)=>{
-      this.http.get(this.baseUrl + '/tv/get-tv-info/' + providerID).subscribe(data=>{
-        resolve(data)
-      }, error=>{
-        resolve(error);
+    console.log('Called to get provider services with TV ID:' + providerID);
+    return await new Promise( (resolve, reject)=>{
+      this.http.get(`${this.baseUrl}/tv/get-tv-info/${providerID}`)
+      .pipe( retry(3) )
+      .subscribe( data => {
+        resolve(data);
+      }, error => {
+        reject(error);
       });
-    })
+    });
 
   }
 
@@ -370,7 +381,9 @@ export class AllServicesProvider {
         providerID: providerID, card: card, amount: amount,
         email: email, phone: phone, gLocatorID: gLocatorID,
         package: packagem, packageID: packageID, provider: provider
-      }).subscribe(data=>{
+      })
+      .pipe( retry(3) )
+      .subscribe(data=>{
         resolve(data);
         console.log('success...')
         this.alertCtrl.create({

@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { AllServicesProvider } from '../../providers/all-services/all-services';
 import { RaveOptions } from 'angular-rave';
-
+import { retry } from 'rxjs/operators';
+import { NotificationProvider } from '../../providers/notification/notification';
+import { InAppBrowser, InAppBrowserObject, InAppBrowserEvent } from '@ionic-native/in-app-browser/ngx';
+import { Rave, RavePayment } from 'rave-ionic3';
+import { ServicesPowerProvider } from '../../providers/services-power/services-power';
 
 
 @IonicPage()
@@ -11,6 +15,7 @@ import { RaveOptions } from 'angular-rave';
   templateUrl: 'order-confirm.html',
 })
 export class OrderConfirmPage {
+  paymentObject: any;
   email: string;
   phone: string;
   meterNo: number;
@@ -19,17 +24,12 @@ export class OrderConfirmPage {
   amount: number;
   convenienceFee: number;
   total: number;
-
-
   networkMethod: string;
   buttonsPage: any[];
   meterTypeMethod: string;
   refKey: any;
-
   pickedStateMethod: string;
   discoMethod: number;
-
-
   token: number;
   transID: any;
   amountPaid: number;
@@ -41,13 +41,11 @@ export class OrderConfirmPage {
   name: any;
   providerElectricity: any;
   serviceProvider: any;
-
   powerToken: number;
   tNo: any;
   txref: any;
   msg: any;
-
-
+  locator: any;
   paymentOptions: RaveOptions = {
     PBFPubKey: 'FLWPUBK-fdd28b56a5a4b71905c27ff9dfb41245-X',
     customer_email: this.email,
@@ -66,11 +64,11 @@ export class OrderConfirmPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public loadCtrl: LoadingController, public alertCtrl: AlertController,
-    public allServices: AllServicesProvider) {
-
-
-
-
+    public allServices: AllServicesProvider, private notification: NotificationProvider,
+    private power: ServicesPowerProvider, private rave: Rave,
+    private ravePayment: RavePayment,
+    private iab: InAppBrowser,) {
+      this.locator = localStorage.getItem('locator');
   }
 
   ionViewWillEnter() {
@@ -143,6 +141,85 @@ export class OrderConfirmPage {
     }).present();
   }
 
+  payWithCard() {
+    this.rave.init(this.notification.PRODUCTION_FLAG, this.notification.FLUTTERWAVE_PUBLIC_KEY)
+    .then(_ => {
+      this.paymentObject = this.ravePayment.create({
+        customer_email: this.email,
+        amount: this.amount,
+        customer_phone: this.phone,
+        currency: 'NGN',
+        txref: this.refKey,
+        redirect_url: `${this.notification.SERVER_HOST}mobile-requests/power/${this.locator}/${this.token}`
+      });
+      this.rave.preRender(this.paymentObject)
+      .then(secureLink => {
+        secureLink = secureLink + ' ';
+        const browser: InAppBrowserObject = this.rave.render(secureLink, this.iab);
+        browser.on('loadstop')
+        .subscribe((event: InAppBrowserEvent) => {
+          if (event.url.indexOf(`${this.notification.SERVER_HOST}mobile-requests/power/${this.locator}/${this.token}`) !== -1) {
+            let paymentResponse = decodeURIComponent(event.url);
+            paymentResponse = paymentResponse.slice(paymentResponse.indexOf('=') + 1, paymentResponse.length)
+            paymentResponse = JSON.parse(paymentResponse);
+            console.log('paymentResponse');
+            console.log(paymentResponse);
+            const status = paymentResponse['status'];
+            if (status === 'failed') {
+              this.notification.ShowAlert('Payment Failed!');
+            } else {
+              this.notification.ShowLoading('Payment successful. Please wait...');
+              // vend airtime
+              this.power.VendPower(localStorage.getItem('locator'), this.refKey, this.amountPaid, this.token)
+              .pipe( retry(3) )
+              .subscribe( (data) => {
+                if (data.status === 200) {
+                  const body = data.body;
+                  if (body.status === 2000) {
+                    this.msg = body.msg;
+                    const util: any = this.msg;
+                    this.token = util.token;
+                    this.powerToken = util.token;
+                    this.transID = util.transID;
+                    this.amountPaid = util.amountPaid;
+                    this.units = util.units;
+                    this.status = body.status;
+                    this.navCtrl.push('TransactionDetailsAirtimePage',
+                    {
+                      meterNo: this.meterNo,
+                      reference: this.refKey,
+                      refKey: this.refKey,
+                      status: event['data']['success'],
+                      total: this.total,
+                      token: this.token,
+                      transID: this.transID,
+                      units: this.units,
+                      amountPaid: this.amountPaid,
+                      name: this.name,
+                      powerToken: this.powerToken
+                    });
+                  } else {
+                    this.notification.ShowAlert(body.msg);
+                  }
+                } else {
+                  this.notification.ShowAlert(data.statusText);
+                }
+              }, error => {
+                this.notification.ShowAlert(error.message);
+              });
+            }
+            browser.close();
+          }
+        });
+      }).catch(error => {
+        // Error or invalid paymentObject passed in
+        console.log('flutterwave error');
+        console.log(error);
+        // this.notification.ShowAlert(error.message);
+      });
+    });
+  }
+
   paymentSuccess(event: { trans: any; reference: any; status: any; }) {
     this.allServices.powerReturn(
       localStorage.getItem("locator"),
@@ -213,12 +290,4 @@ export class OrderConfirmPage {
     }
     );
   }
-
-
-
-
-
-
-
-
 }

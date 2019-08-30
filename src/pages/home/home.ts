@@ -17,7 +17,7 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
     this.allServices.gLocatorId().then(data=>{
-      
+
       let d:any = data;
       localStorage.setItem("locator", d);
       console.log(localStorage.getItem("locator"));
@@ -40,7 +40,10 @@ export class HomePage {
 
   tv(){
     this.navCtrl.push('TvPage');
+  }
 
+  vendor() {
+    this.navCtrl.push('VendorsSignupPage');
   }
 
 

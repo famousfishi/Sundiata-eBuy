@@ -85,21 +85,15 @@
                 </ion-row> -->
 
         <ion-row>
-          <ion-col col-6>
+          <ion-col col-12>
             <button (click)="back()" ion-button color="danger" large block>
-              <ion-icon name="arrow-back"></ion-icon> Back
+              <ion-icon name="arrow-back"></ion-icon>&nbsp;&nbsp;Back
             </button>
           </ion-col>
-          <ion-col col-6>
-
-           <button angular-rave (init)="paymentInit()" class="btn btn-primary payBtn" [raveOptions]="paymentOptions"
-             (callback)="paymentSuccess($event)">
-             <ion-icon name="card" large></ion-icon>PAY WITH RAVE
-
+          <ion-col col-12>
+           <button ion-button large block>
+             <ion-icon name="card" large></ion-icon>&nbsp;&nbsp;PAY WITH CARD
            </button>
-
-
-
           </ion-col>
         </ion-row>
       </ion-grid>

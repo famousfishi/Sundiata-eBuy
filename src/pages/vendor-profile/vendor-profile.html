@@ -1,0 +1,70 @@
+<!--
+  Generated template for the VendorProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<ion-content padding>
+  <ion-grid justify-content-center>
+      <ion-refresher (ionRefresh)="RefreshPage($event)">
+        <ion-refresher-content
+          pullingIcon="arrow-dropdown"
+          pullingText="Pull to refresh"
+          refreshingSpinner="circles"
+          refreshingText="Updating profile..."
+        ></ion-refresher-content>
+      </ion-refresher>
+    <ion-row *ngIf="user">
+      <ion-col col-12>
+        <img src="../../assets/imgs/unknown.png" class="profile-pic">
+        <div class="profile-body">
+          <h4>{{ user.vendor.business_name ? user.vendor.business_name : 'Incomplete Profile' }}</h4>
+        </div>
+        <div class="profile-content">
+          <ion-row>
+            <ion-col col-6>
+              <h5>Name: </h5>
+              <p>{{ user.fname + ' ' + user.lname }}</p>
+            </ion-col>
+            <ion-col col-6>
+              <h5>Phone: </h5>
+              <p>{{ user.phone }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6>
+              <h5>E-mail: </h5>
+              <p>{{ user.email }}</p>
+            </ion-col>
+            <ion-col col-6>
+              <h5>Vendor Code: </h5>
+              <p>{{ user.vendor.code }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12>
+              <h5>Address: </h5>
+              <p>{{ user.vendor.address ? user.vendor.address : 'Missing vendor address' }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6>
+              <h5>City: </h5>
+              <p>{{ user.vendor.city ? user.vendor.city : 'Missing profile city' }}</p>
+            </ion-col>
+            <ion-col col-6>
+              <h5>State</h5>
+              <p>{{ user.vendor.state ? user.vendor.state.state + ' - ' + user.vendor.state.capital : 'Missing profile state'}}</p>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div class="profile-body">
+          <h4>Balance: {{ user.wallet.balance | currency: "&#x20A6;"}}</h4>
+          <button ion-button block large (click)="OpenUpdateModal()" >Update Profile</button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
